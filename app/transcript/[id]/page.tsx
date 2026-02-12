@@ -89,13 +89,13 @@ export default function TranscriptDetailPage() {
         }
         setTranscript(data);
         setError(null);
-      } catch (e) {
+      } catch {
         if (!cancelled) {
           setError("Network error");
           setTranscript(null);
         }
       } finally {
-        if (!cancelled) setLoading(false);
+        if (!cancelled) setLoading(false);    
       }
     }
     fetchTranscript();

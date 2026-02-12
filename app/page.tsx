@@ -249,7 +249,7 @@ export default function TranscriptGenerator() {
                   <p className={`text-sm leading-relaxed ${
                     theme === "dark" ? "text-slate-400" : "text-slate-600"
                   }`}>
-                    Click "Extract Action Items" to process using AI and extract tasks.
+                  Click &quot;Extract Action Items&quot; to process using AI and extract tasks.
                   </p>
                 </div>
               </div>

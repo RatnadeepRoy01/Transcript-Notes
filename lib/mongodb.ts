@@ -5,14 +5,12 @@ if (!process.env.MONGODB_URI) {
 }
 
 const uri: string = process.env.MONGODB_URI;
-let client: MongoClient;
-let clientPromise: Promise<MongoClient>;
 
-client = new MongoClient(uri, {
+const client = new MongoClient(uri, {
   tls: true,
   tlsAllowInvalidCertificates: false,
 });
-clientPromise = client.connect();
+const clientPromise = client.connect();
 
 export async function getDB(): Promise<Db> {
   const client = await clientPromise;

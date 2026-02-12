@@ -76,7 +76,7 @@ export async function PATCH(
     }
    
     if (Array.isArray(body.actions)) {
-      updates.actions = body.actions.map((a: any) => ({
+      updates.actions = body.actions.map((a: ActionItem) => ({
       task: a.task ? String(a.task) : "",           
       owner: a.owner ? String(a.owner) : null,       
       dueDate: a.dueDate ? String(a.dueDate) : null,
