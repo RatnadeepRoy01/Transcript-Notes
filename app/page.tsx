@@ -420,7 +420,7 @@ export default function TranscriptGenerator() {
                 value={inputText}
                 onChange={(e) => setInputText(e.target.value)}
                 disabled={loading}
-                className={`min-h-[240px] resize-y rounded-xl font-mono text-sm focus-visible:ring-cyan-500/50 focus-visible:ring-2 disabled:opacity-50 transition-all ${
+                className={`h-[240px] overflow-y-auto resize-none rounded-xl font-mono text-sm focus-visible:ring-cyan-500/50 focus-visible:ring-2 disabled:opacity-50 transition-all ${
                   theme === "dark"
                     ? "bg-slate-950/50 border-slate-700/50 text-slate-100 placeholder-slate-500 focus-visible:border-cyan-500/50"
                     : "bg-slate-50/50 border-slate-200/50 text-slate-900 placeholder-slate-400 focus-visible:border-cyan-400/50"
