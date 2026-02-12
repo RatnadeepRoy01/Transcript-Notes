@@ -6,7 +6,7 @@ Transform meeting transcripts into structured action items automatically.
 
 1. **Clone the repository**
    ```bash
-   git clone <your-repo-url>
+   git clone https://github.com/RatnadeepRoy01/Transcript-Notes
    ```
 
 2. **Install dependencies**
