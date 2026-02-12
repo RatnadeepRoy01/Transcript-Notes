@@ -8,7 +8,10 @@ const uri: string = process.env.MONGODB_URI;
 let client: MongoClient;
 let clientPromise: Promise<MongoClient>;
 
-client = new MongoClient(uri);
+client = new MongoClient(uri, {
+  tls: true,
+  tlsAllowInvalidCertificates: false,
+});
 clientPromise = client.connect();
 
 export async function getDB(): Promise<Db> {
