@@ -1,36 +1,69 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Meeting Transcript Action Items Generator
 
-## Getting Started
+Transform meeting transcripts into structured action items automatically.
 
-First, run the development server:
+## 🚀 Setup
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+1. **Clone the repository**
+   ```bash
+   git clone <your-repo-url>
+   ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. **Configure environment variables**
+   ```bash
+   cp .env.example .env
+   ```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+4. **Add MongoDB URI**
+   - Get your URI from [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)
+   - Add to `.env`:
+     ```
+     MONGODB_URI=your_mongodb_uri
+     ```
 
-## Learn More
+5. **Add Gemini API Key**
+   - Get your key from [Google AI Studio](https://aistudio.google.com/apikey)
+   - Add to `.env`:
+     ```
+     GEMINI_API_KEY=your_api_key
+     ```
 
-To learn more about Next.js, take a look at the following resources:
+6. **Run the app**
+   ```bash
+   npm run start
+   ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Access the app at `http://localhost:3000`
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 📋 How to Use
 
-## Deploy on Vercel
+1. **Paste Transcript** - Copy your meeting transcript and paste it into the text box.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+2. **Generate Action Items** - Click "Extract Action Items" to process using AI and extract tasks.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+3. **View Action Items** - See all tasks with owner, due date, and status information.
+
+4. **Edit / Add / Delete Tasks** - Modify tasks as needed or add new ones manually.
+
+5. **Filter Tasks** - Use filters to view all, open, or completed tasks.
+
+6. **Check History** - Access the transcripts you've previously processed.
+
+## ✅ Features Done
+
+- Paste a meeting transcript and generate structured action items
+- Extracted action items include: Task, Owner, Due date, Status (open/done)
+- Store transcripts and action items in MongoDB
+- View last transcripts (history)
+- Edit, add, delete action items
+- Filter action items: Open / Done
+- Add tags based on priority
+
+## ❌ Features Not Done
+
+- Advanced editor
