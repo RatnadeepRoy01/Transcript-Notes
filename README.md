@@ -35,7 +35,7 @@ Transform meeting transcripts into structured action items automatically.
 
 6. **Run the app**
    ```bash
-   npm run start
+   npm run dev
    ```
 
 Access the app at `http://localhost:3000`
