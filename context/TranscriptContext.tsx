@@ -8,7 +8,7 @@ import {
   type ReactNode,
 } from "react";
 
-import type { PriorityTag } from "@/lib/actionTags";
+type PriorityTag = "high" | "medium" | "low";
 
 export type ActionItem = {
   task: string;
@@ -18,10 +18,16 @@ export type ActionItem = {
   priority?: PriorityTag | null;
 };
 
+interface MoodAnalysis {
+  overall: "positive" | "neutral" | "negative";
+  score: number;
+}
+
 export type Transcript = {
   _id: string;
   text: string;
   actions: ActionItem[];
+  mood: MoodAnalysis;
   createdAt: string;
 };
 

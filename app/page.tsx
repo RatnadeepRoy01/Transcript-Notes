@@ -17,12 +17,11 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import Link from "next/link";
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { useTranscriptContext, type ActionItem } from "@/context/TranscriptContext";
+import { useTranscriptContext } from "@/context/TranscriptContext";
 
 export default function TranscriptGenerator() {
   const { transcripts, setTranscripts } = useTranscriptContext();
   const [inputText, setInputText] = useState("");
-  const [actions, setActions] = useState<ActionItem[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [theme, setTheme] = useState<"light" | "dark">("dark");
@@ -72,7 +71,6 @@ export default function TranscriptGenerator() {
 
   async function handleGenerate() {
     setError(null);
-    setActions([]);
     setLoading(true);
 
     try {
@@ -89,11 +87,9 @@ export default function TranscriptGenerator() {
         return;
       }
 
-      setActions(Array.isArray(data.actions) ? data.actions : []);
-
       // Add the new transcript to context (already have it from POST response)
       setTranscripts((prev) => [
-        { _id: data._id, text: data.text, actions: data.actions ?? [], createdAt: data.createdAt },
+        { _id: data._id, text: data.text, actions: data.actions ?? [], mood: data.mood, createdAt: data.createdAt },
         ...prev,
       ]);
     } catch {
@@ -477,22 +473,6 @@ export default function TranscriptGenerator() {
           </div>
         )}
 
-        {/* Empty state */}
-        {!loading && actions.length === 0 && !error && inputText.trim() && (
-          <div className="text-center py-12 animate-fade-in">
-            <p className={`text-lg mb-2 ${
-              theme === "dark" ? "text-slate-400" : "text-slate-600"
-            }`}>
-              No action items found
-            </p>
-            <p className={`text-sm ${
-              theme === "dark" ? "text-slate-500" : "text-slate-500"
-            }`}>
-              Try a longer transcript or add clearer tasks and assignees
-            </p>
-          </div>
-        )}
-
         {/* History Section */}
         <section className="mt-16 animate-fade-in">
           <div className="flex items-center gap-3 mb-6">
@@ -538,58 +518,84 @@ export default function TranscriptGenerator() {
                     }`}
                   >
                     <CardHeader>
-                    <div className="flex items-start justify-between gap-4 mb-2">
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-2">
-                          <Clock className={`w-4 h-4 ${
-                            theme === "dark" ? "text-slate-400" : "text-slate-500"
-                          }`} />
-                          <span className={`text-xs ${
-                            theme === "dark" ? "text-slate-400" : "text-slate-500"
-                          }`}>
-                            {new Date(transcript.createdAt).toLocaleString()}
-                          </span>
-                        </div>
-                        <p className={`text-sm line-clamp-2 ${
-                          theme === "dark" ? "text-slate-300" : "text-slate-700"
-                        }`}>
-                          {transcript.text}
-                        </p>
-                      </div>
-                      <span className={`text-xs font-medium px-2 py-1 rounded ${
-                        theme === "dark"
-                          ? "bg-cyan-500/20 text-cyan-300"
-                          : "bg-cyan-200/50 text-cyan-700"
-                      }`}>
-                        {transcript.actions.length} {transcript.actions.length === 1 ? "action" : "actions"}
-                      </span>
-                    </div>
-                    {transcript.actions.length > 0 && (
-                      <div className="mt-3 pt-3 border-t border-slate-700/30 dark:border-slate-700/30">
-                        <div className="space-y-2">
-                          {transcript.actions.slice(0, 3).map((action, idx) => (
-                            <div
-                              key={idx}
-                              className={`text-sm flex items-center gap-2 ${
-                                theme === "dark" ? "text-slate-400" : "text-slate-600"
-                              }`}
-                            >
-                              <Check className="w-3 h-3 shrink-0" />
-                              <span className="line-clamp-1">{action.task}</span>
-                            </div>
-                          ))}
-                          {transcript.actions.length > 3 && (
-                            <p className={`text-xs italic ${
-                              theme === "dark" ? "text-slate-500" : "text-slate-500"
+                      <div className="flex items-start justify-between gap-4 mb-2">
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2 mb-2">
+                            <Clock className={`w-4 h-4 ${
+                              theme === "dark" ? "text-slate-400" : "text-slate-500"
+                            }`} />
+                            <span className={`text-xs ${
+                              theme === "dark" ? "text-slate-400" : "text-slate-500"
                             }`}>
-                              +{transcript.actions.length - 3} more
-                            </p>
+                              {new Date(transcript.createdAt).toLocaleString()}
+                            </span>
+                          </div>
+                          <p className={`text-sm line-clamp-2 ${
+                            theme === "dark" ? "text-slate-300" : "text-slate-700"
+                          }`}>
+                            {transcript.text}
+                          </p>
+                        </div>
+                        <div className="flex items-center gap-2 shrink-0">
+                          <span className={`text-xs font-medium px-2 py-1 rounded ${
+                            theme === "dark"
+                              ? "bg-cyan-500/20 text-cyan-300"
+                              : "bg-cyan-200/50 text-cyan-700"
+                          }`}>
+                            {transcript.actions.length} {transcript.actions.length === 1 ? "action" : "actions"}
+                          </span>
+                          {transcript.mood && (
+                            <>
+                              <span className={`text-xs font-medium px-2 py-1 rounded capitalize ${
+                                transcript.mood.overall === "positive"
+                                  ? theme === "dark"
+                                    ? "bg-green-500/20 text-green-300"
+                                    : "bg-green-200/50 text-green-700"
+                                  : transcript.mood.overall === "negative"
+                                  ? theme === "dark"
+                                    ? "bg-red-500/20 text-red-300"
+                                    : "bg-red-200/50 text-red-700"
+                                  : theme === "dark"
+                                  ? "bg-yellow-500/20 text-yellow-300"
+                                  : "bg-yellow-200/50 text-yellow-700"
+                              }`}>
+                                {transcript.mood.overall}
+                              </span>
+                              <span className={`text-xs font-semibold px-2 py-1 rounded ${
+                                theme === "dark" ? "bg-slate-700/50 text-slate-300" : "bg-slate-200/50 text-slate-700"
+                              }`}>
+                                {transcript.mood.score}
+                              </span>
+                            </>
                           )}
                         </div>
                       </div>
-                    )}
-                  </CardHeader>
-                </Card>
+                      {transcript.actions.length > 0 && (
+                        <div className="mt-3 pt-3 border-t border-slate-700/30 dark:border-slate-700/30">
+                          <div className="space-y-2">
+                            {transcript.actions.slice(0, 3).map((action, idx) => (
+                              <div
+                                key={idx}
+                                className={`text-sm flex items-center gap-2 ${
+                                  theme === "dark" ? "text-slate-400" : "text-slate-600"
+                                }`}
+                              >
+                                <Check className="w-3 h-3 shrink-0" />
+                                <span className="line-clamp-1">{action.task}</span>
+                              </div>
+                            ))}
+                            {transcript.actions.length > 3 && (
+                              <p className={`text-xs italic ${
+                                theme === "dark" ? "text-slate-500" : "text-slate-500"
+                              }`}>
+                                +{transcript.actions.length - 3} more
+                              </p>
+                            )}
+                          </div>
+                        </div>
+                      )}
+                    </CardHeader>
+                  </Card>
                 </Link>
               ))}
             </div>
